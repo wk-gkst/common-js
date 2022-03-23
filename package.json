@@ -1,6 +1,6 @@
 {
   "name": "@gkst/common",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Common Library",
   "scripts": {
     "build": "rimraf dist && tsc -p tsconfig.json",
