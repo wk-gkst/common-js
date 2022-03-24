@@ -4,6 +4,7 @@ import {
   sortObject,
   convertObject,
   objectToArray,
+  generateRandomHash,
 } from "./utils";
 
 export {
@@ -12,4 +13,5 @@ export {
   sortObject,
   convertObject,
   objectToArray,
+  generateRandomHash,
 };

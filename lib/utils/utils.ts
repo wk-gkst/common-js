@@ -1,3 +1,5 @@
+import * as crypto from "crypto";
+
 export const isUndefinedOrNull = (value: any): boolean => {
   return (
     undefined === value ||
@@ -86,4 +88,8 @@ export const convertObject = (object: any, convert: any, depth: any) => {
     return stringified;
   }
   return object;
+};
+
+export const generateRandomHash = (length = 20) => {
+  return crypto.randomBytes(length).toString("hex");
 };
