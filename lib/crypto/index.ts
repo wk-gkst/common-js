@@ -7,6 +7,7 @@ import {
   desDecrypt,
   desEncrypt,
   generateRandomPassword,
+  generateRSAKeyPair,
 } from "./crypto";
 
 export {
@@ -18,4 +19,5 @@ export {
   desDecrypt,
   desEncrypt,
   generateRandomPassword,
+  generateRSAKeyPair,
 };

@@ -1,5 +1,6 @@
 import {describe, expect, test} from '@jest/globals';
-import {  desDecrypt, desEncrypt, generateRandomPassword } from '../lib/crypto';
+import {  desDecrypt, desEncrypt, generateRandomPassword, generateRSAKeyPair } from '../lib/crypto';
+import * as crypto from "crypto";
 
 describe("Crypto Des Encryption (e2e)", () => {
   let secret = "this is a secret";
@@ -25,5 +26,24 @@ describe("generateRandomPassword (e2e)", () => {
     const password = generateRandomPassword(length);
     expect(password).toHaveLength(length);
   });
+
+});
+
+
+describe("generateRSAKeyPair (e2e)", () => {
+
+  it("test generateRSAKeyPair without password", ()=> {
+     const result = generateRSAKeyPair(4096);
+    expect(result.privateKey.length).toBeGreaterThan(0);
+    expect(result.publicKey.length).toBeGreaterThan(0);
+  });
+
+  it("test generateRSAKeyPair with password", ()=> {
+    const result = generateRSAKeyPair(4096, null, { cipher: "aes-256-cbc", passphrase: "top secret", });
+
+    expect(result.privateKey.length).toBeGreaterThan(0);
+    expect(result.publicKey.length).toBeGreaterThan(0);
+   
+ });  
 
 });

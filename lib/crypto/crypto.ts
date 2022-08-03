@@ -127,3 +127,34 @@ export const generateRandomPassword = (
   }
   return result;
 };
+
+export const generateRSAKeyPair = (
+  keyLength = 4096,
+  publicKeyEncoding: any = {},
+  privateKeyEncoding: any = {},
+) => {
+  const currentPubEncoding = {
+    type: "spki",
+    format: "pem",
+    ...publicKeyEncoding,
+  };
+
+  const currentPrivEncoding = {
+    type: "pkcs8",
+    format: "pem",
+    ...privateKeyEncoding,
+    // cipher: "aes-256-cbc",
+    // passphrase: "top secret",
+  };
+  console.log("currentPubEncoding", JSON.stringify(currentPubEncoding));
+  const result = crypto.generateKeyPairSync("rsa", {
+    modulusLength: keyLength,
+    publicKeyEncoding: {
+      ...currentPubEncoding,
+    },
+    privateKeyEncoding: {
+      ...currentPrivEncoding,
+    },
+  });
+  return result;
+};
