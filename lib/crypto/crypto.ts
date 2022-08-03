@@ -11,10 +11,7 @@ export const sha256 = (value: string, isBase64 = false) => {
 };
 
 export const hmacSha256 = (value: string, secret: string) => {
-  return crypto
-    .createHmac("sha256", secret)
-    .update("I love cupcakes")
-    .digest("hex");
+  return crypto.createHmac("sha256", secret).update(value).digest("hex");
 };
 
 export const encryptText = (
@@ -58,4 +55,75 @@ const createSecretKeyBytes = (password: string): Buffer => {
     16,
     "sha1",
   );
+};
+
+export const desEncrypt = (
+  text: string,
+  secret: string | Buffer,
+  algorithm = "des-ecb",
+): string => {
+  const secretBuffer =
+    typeof secret === "string" ? Buffer.from(secret) : secret;
+  const cipher = crypto.createCipheriv(
+    algorithm,
+    secretBuffer.slice(0, 8),
+    null,
+  );
+  let encrypted = cipher.update(text, "utf8", "hex");
+  encrypted += cipher.final("hex");
+  return encrypted;
+};
+
+export const desDecrypt = (
+  encrypted: string,
+  secret: string | Buffer,
+  algorithm = "des-ecb",
+): string => {
+  const secretBuffer =
+    typeof secret === "string" ? Buffer.from(secret) : secret;
+  const decipher = crypto.createDecipheriv(
+    algorithm,
+    secretBuffer.slice(0, 8),
+    null,
+  );
+  let decrypted = decipher.update(encrypted, "hex", "utf8");
+  decrypted += decipher.final("utf8");
+  return decrypted;
+};
+
+export const generateRandomPassword = (
+  length: number,
+  number = true,
+  upperCase = true,
+  lowerCase = true,
+  symbol = false,
+): string => {
+  const numberChars = "0123456789";
+  const lowerCaseChars = "abcdefghijklmnopqrstuvwxyz";
+  const upperCaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const symbolChars = "!@#$%^&*()_+";
+
+  let characters = "";
+  if (number) {
+    characters += numberChars;
+  }
+
+  if (upperCase) {
+    characters += upperCaseChars;
+  }
+
+  if (lowerCase) {
+    characters += lowerCaseChars;
+  }
+
+  if (symbol) {
+    characters += symbolChars;
+  }
+
+  const charactersLength = characters.length;
+  let result = "";
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
 };
