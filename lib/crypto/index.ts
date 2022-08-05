@@ -8,6 +8,9 @@ import {
   desEncrypt,
   generateRandomPassword,
   generateRSAKeyPair,
+  computeBcryptSalt,
+  computeBcrypt,
+  isBcryptMatch,
 } from "./crypto";
 
 export {
@@ -20,4 +23,7 @@ export {
   desEncrypt,
   generateRandomPassword,
   generateRSAKeyPair,
+  computeBcryptSalt,
+  computeBcrypt,
+  isBcryptMatch,
 };

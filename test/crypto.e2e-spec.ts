@@ -1,5 +1,5 @@
 import {describe, expect, test} from '@jest/globals';
-import {  desDecrypt, desEncrypt, generateRandomPassword, generateRSAKeyPair } from '../lib/crypto';
+import {  computeBcrypt, computeBcryptSalt, desDecrypt, desEncrypt, generateRandomPassword, generateRSAKeyPair, isBcryptMatch } from '../lib/crypto';
 import * as crypto from "crypto";
 
 describe("Crypto Des Encryption (e2e)", () => {
@@ -45,5 +45,25 @@ describe("generateRSAKeyPair (e2e)", () => {
     expect(result.publicKey.length).toBeGreaterThan(0);
    
  });  
+
+});
+
+
+describe("Bcrypt (e2e)", () => {
+  const password = "this is a super strong password";
+  const incorrectPassword = "this is a incorrect password";
+  const salt = "$2b$10$LQH3By1T/h4Fyjt4RhSV7.";
+
+  it("test computeBcrypt", async ()=> {
+      const bcrypt1 = await computeBcrypt(password, salt);
+      const bcrypt2 = await computeBcrypt(password);
+
+      expect(await isBcryptMatch(password, bcrypt1)).toBeTruthy();
+      expect(await isBcryptMatch(password, bcrypt2)).toBeTruthy();
+      expect(await isBcryptMatch(incorrectPassword, bcrypt1)).toBeFalsy();
+      expect(await isBcryptMatch(incorrectPassword, bcrypt2)).toBeFalsy();
+  });
+
+
 
 });

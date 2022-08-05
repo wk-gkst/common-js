@@ -1,4 +1,5 @@
 import * as crypto from "crypto";
+import * as bcrypt from "bcrypt";
 
 export const md5 = (value: string, isBase64 = false) => {
   const hash = crypto.createHash("md5").update(value);
@@ -146,7 +147,6 @@ export const generateRSAKeyPair = (
     // cipher: "aes-256-cbc",
     // passphrase: "top secret",
   };
-  console.log("currentPubEncoding", JSON.stringify(currentPubEncoding));
   const result = crypto.generateKeyPairSync("rsa", {
     modulusLength: keyLength,
     publicKeyEncoding: {
@@ -157,4 +157,23 @@ export const generateRSAKeyPair = (
     },
   });
   return result;
+};
+
+export const computeBcryptSalt = async (saltRound = 10): Promise<string> => {
+  return await bcrypt.genSalt(saltRound);
+};
+
+export const computeBcrypt = async (
+  plainText: string,
+  salt: string = undefined,
+): Promise<string> => {
+  const bcryptSalt = salt || (await bcrypt.genSalt());
+  return await bcrypt.hash(plainText, bcryptSalt);
+};
+
+export const isBcryptMatch = async (
+  plainText: string,
+  hash: string,
+): Promise<boolean> => {
+  return await bcrypt.compare(plainText, hash);
 };
